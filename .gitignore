@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+.eggs/
+build/
+dist/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Environment files
+.env
+.env.*
+!.env.template
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+
+# Caches and test artifacts
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Local model weights and KB caches
+models/
+*.gguf
+knowledge_base/**/cache/
