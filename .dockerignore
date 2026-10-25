@@ -1,0 +1,16 @@
+.git
+.venv
+.idea
+.vscode
+__pycache__
+*.pyc
+.pytest_cache
+.ruff_cache
+.mypy_cache
+.env
+.env.*
+!.env.template
+knowledge_base/**/cache
+models
+*.gguf
+docs

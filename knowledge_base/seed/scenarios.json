@@ -1,0 +1,20 @@
+[
+  {
+    "code": "university_choice",
+    "title": "Выбор вуза/колледжа",
+    "description": "Анализ критериев поступления и типичных ошибок",
+    "sort_order": 1
+  },
+  {
+    "code": "job_search",
+    "title": "Поиск первой работы",
+    "description": "Резюме, отклики и собеседования",
+    "sort_order": 2
+  },
+  {
+    "code": "first_month",
+    "title": "Первый месяц в компании",
+    "description": "Адаптация и коммуникация в команде",
+    "sort_order": 3
+  }
+]

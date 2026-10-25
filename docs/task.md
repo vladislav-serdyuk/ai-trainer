@@ -1,3 +1,5 @@
+# [Sk Kids Challenge 2026](https://kids.sk.ru/skkidschallenge)
+
 **Название компании**  
 Софтлайн Решения  
   

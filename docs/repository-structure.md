@@ -15,18 +15,19 @@
 │       │   ├── main.py             # точка входа (python -m ai_trainer.bot.main)
 │       │   ├── handlers/           # хендлеры: команды, текст, голос
 │       │   ├── keyboards/          # клавиатуры выбора сценария/режима
-│       │   └── fsm.py              # состояния FSM
+│       │   ├── consent.py          # middleware-гейт согласия
+│       │   └── deps.py             # сборка зависимостей (синглтоны)
 │       ├── pipeline/               # СЛОЙ pipeline: оркестрация диалога
 │       │   ├── orchestrator.py     # главный сценарий обработки сообщения
 │       │   ├── states.py           # FSM диалога (сценарий/режим/шаг)
-│       │   └── context.py          # сборка контекста (история + KB)
+│       │   └── context.py          # Reply/Button — транспортно-независимый ответ
 │       ├── agent/                  # СЛОЙ agent: LLM и инструменты
 │       │   ├── client.py           # LLMClient (openai SDK, provider-agnostic)
-│       │   ├── tools/              # retriever, web_search (function calling)
+│       │   ├── tools/              # retriever, веб-поиск, страницы, чистка/реранк
 │       │   └── schemas.py          # pydantic-модели ответов LLM
 │       ├── rag/                    # СЛОЙ rag: база знаний
-│       │   ├── ingest/             # fetch → clean → chunk → embed → store
-│       │   ├── embeddings.py       # multilingual-e5-small
+│       │   ├── ingest/             # JSON-источники → chunk → embed → store
+│       │   ├── embeddings.py       # fastembed-эмбеддер (см. ADR-0011)
 │       │   ├── retrieve.py         # поиск + (опц.) реранк
 │       │   └── citations.py        # сборка ссылок на источники
 │       ├── stt/                    # СЛОЙ stt (лист)

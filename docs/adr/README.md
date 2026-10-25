@@ -29,3 +29,4 @@
 | [0008](0008-structured-llm-output.md) | Структурированный вывод LLM + валидация pydantic | Accepted |
 | [0009](0009-layered-architecture-and-ports.md) | Слоистая архитектура и правила зависимостей | Accepted |
 | [0010](0010-ethics-and-data-minimization.md) | Этика, дисклеймер, минимизация ПДн | Accepted |
+| [0011](0011-embedding-model-fastembed.md) | Модель эмбеддингов и реранкера через fastembed | Accepted |

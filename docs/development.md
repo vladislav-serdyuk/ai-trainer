@@ -8,10 +8,10 @@
 - **Python 3.12** (см. [ADR-0007](adr/0007-python-3-12.md)). Системный 3.14 не
   используем.
 - **uv** — управление окружением и зависимостями.
-- **Docker + Docker Compose** — PostgreSQL + pgvector.
+- **Docker + Docker Compose** — PostgreSQL + pgvector, Ollama, бот.
 - **ffmpeg** — конвертация голосовых для STT.
 - **Ollama** — локальная LLM (см. [ADR-0003](adr/0003-local-llm-ollama-then-vllm.md)).
-- GPU: NVIDIA RTX 4050 Laptop, 6 GB VRAM.
+- GPU: NVIDIA RTX 4050 Laptop, 6 GB VRAM (опционально; по умолчанию LLM на CPU).
 
 ## Первый запуск (черновик, уточняется по мере реализации)
 
@@ -21,7 +21,9 @@ uv python install 3.12
 uv sync
 
 # 2. Переменные окружения
-cp .env.template .env   # заполнить токен бота и провайдера LLM
+cp .env.template .env   # заполнить токен бота
+# Шаблон настроен на docker compose; для локального запуска заменить:
+#   DATABASE_URL → localhost:5433, LLM_BASE_URL → http://localhost:11434/v1
 
 # 3. БД
 docker compose up -d db
@@ -32,12 +34,32 @@ uv run alembic upgrade head
 # 5. Загрузка базы знаний (сид + ingest)
 uv run python -m ai_trainer.rag.ingest
 
-# 6. Локальная модель
-ollama pull qwen2.5:3b
+# 6. Локальная модель (поддержка tool-calling обязательна)
+# GPU: qwen2.5:7b. CPU: qwen2.5:3b + алиас с num_thread 8.
+ollama pull qwen2.5:7b
+# ollama pull qwen2.5:3b
+# ollama create qwen2.5:3b-fast -f models/qwen2.5-3b-fast.Modelfile
 
 # 7. Запуск бота
 uv run python -m ai_trainer.bot.main
 ```
+
+## CLI-тестер бота
+
+`tools/bot_cli.py` — диалог с ботом из консоли через настоящий dispatcher
+(реальная БД и LLM, Telegram не трогается). Удобно для E2E-сценариев:
+
+```bash
+# из корня репозитория (или внутри контейнера бота)
+uv run python tools/bot_cli.py --user 42
+
+# в docker compose (бот-образ; entrypoint пропускает произвольную команду)
+docker compose run --rm --no-deps -T bot python tools/bot_cli.py --user 42
+```
+
+Кнопки нажимаются номерами (`1..N`), служебные команды `:state`, `:help`,
+`:quit`. Запуск в изолированном `docker compose run` устойчив к перезапускам
+сервиса `bot` (например, при обрыве Telegram polling без VPN).
 
 ## Инструменты качества
 

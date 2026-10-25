@@ -64,10 +64,10 @@ documents.scenario ── scenarios.code   (логическая связь по
 | `scenario_code` | text FK → scenarios, null | выбранный сценарий (null до выбора) |
 | `mode` | `mode`, null | режим (null до выбора) |
 | `state` | `session_state`, not null | текущее состояние FSM |
-| `case_ids` | jsonb, not null, default `[]` | выбранные кейсы тренажёра (3–5) |
+| `case_ids` | jsonb, not null, default `[]` | выбранные кейсы тренажёра (до `TRAINER_CASES_MAX`, но не больше доступных) |
 | `case_index` | int, not null, default `0` | позиция в наборе кейсов |
 | `started_at` | timestamptz, not null | начало |
-| `last_activity_at` | timestamptz, not null | для таймаута неактивности |
+| `last_activity_at` | timestamptz, not null | последняя активность (диагностика; idle-таймаут не применяется) |
 | `ended_at` | timestamptz, null | завершение (null = активная) |
 
 Индексы:
@@ -181,7 +181,7 @@ documents.scenario ── scenarios.code   (логическая связь по
 | `chunk_index` | int, not null | порядок внутри документа |
 | `content` | text, not null | текст чанка |
 | `token_count` | int | размер |
-| `embedding` | `vector(384)`, not null | multilingual-e5-small |
+| `embedding` | `vector(384)`, not null | paraphrase-multilingual-MiniLM-L12-v2 (см. ADR-0011) |
 | `meta` | jsonb | доп. атрибуты |
 
 Индексы: HNSW/IVFFlat по `embedding` (cosine); `(document_id)`.
